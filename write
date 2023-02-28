@@ -1,0 +1,68 @@
+from Englisah_translate.login import translate
+import os
+
+
+def get_words():
+    s = []
+    f = open(r"E:\desktop\wordslist.txt", "r", encoding="utf-8")
+    data = f.readlines()
+    for i in data:
+        s.append(i.strip("\n"))
+    return s
+
+
+def str_to(lis):
+    return ''.join(lis)
+
+
+# 单次获取，调用类的dict能获取全部数据
+
+def way1():
+    # 每一个单词都写入一个txt,有很多个txt
+    for word in all_words:
+        # 如果trans = translate()写在循环内，相当于还是导入的原来的类，并没有新开
+        i, j, k = trans.action(word=word)
+        # 每一个单词都写入一个txt
+        with open(f"{word}.txt", 'w', encoding='gbk') as fp:
+            x = ''.join(i) + '\n'.join(j) + '\n'.join(k) + '\n'
+            fp.write(x)
+
+    print(dict)
+    trans.close()
+
+
+# 这种最好，个人认为
+def new_way():
+    # 只写入一个txt
+    f = open("all_the_words.txt",'a',encoding='utf-8')
+    for word in all_words:
+        i, j, k = trans.action(word=word)
+        x = ''.join(i) + '\n'.join(j) + '\n'.join(k) + '\n'
+        f.write(x)
+    trans.close()
+    f.close()
+
+# 所有的一并写入
+
+def way2():
+    # 只写入一次，将全部写入一个txt
+    for word in all_words:
+        trans.action2(word=word)
+    trans.close()
+    # 全部单词都写入一个txt
+    with open("all.txt", 'w', encoding='utf-8') as fp:
+        x = ''.join(trans.r_result)+ '\n'.join(trans.r_details) + '\n'.join(trans.r_examples) + '\n'
+        fp.write(x)
+
+    trans.close()
+if __name__ == '__main__':
+    all_words = get_words()
+    trans = translate()
+    f = open("all_the_words.txt", 'a', encoding='utf-8')
+    for word in all_words:
+        i, j, k = trans.action(word=word)
+        x = ''.join(i)+'\n'.join(j)+'\n'.join(k)+'\n'
+        print(x)
+        f.write(x)
+    trans.close()
+    f.close()
